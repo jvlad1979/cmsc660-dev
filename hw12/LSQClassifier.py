@@ -34,14 +34,15 @@ class LSQClassifier:
         return np.sign(self._predict_score(X))
 
     def _predict_score(self,X):
-        d = np.size(X,axis = 1)
-        d2 = d*d
-        W = np.reshape(self.w[:d2],(d,d))
-        v = self.w[d2:d2+d]
-        b = self.w[-1]
-        qterm = np.diag(X@W@np.transpose(X))
-        lterm = X @ v
-        preds = qterm + lterm + b
+        n,d = X.shape
+        # d2 = d*d
+        # W = np.reshape(self.w[:d2],(d,d))
+        # v = self.w[d2:d2+d]
+        # b = self.w[-1]
+        # qterm = np.diag(X@W@np.transpose(X))
+        # lterm = X @ v
+        # preds = qterm + lterm + b
+        preds = self._myquadratic(X,np.ones(n),self.w)
         return preds
 
     def _Res_and_Jac(self,X,y,w,lam = 0):

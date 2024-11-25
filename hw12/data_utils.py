@@ -33,6 +33,8 @@ def get_train_test(k=20):
     X_test = np.squeeze(np.concatenate((imgs_test[:,:,idx_test_1s],imgs_test[:,:,idx_test_7s]),axis = -1))
     X = np.squeeze(np.concatenate((X_train,X_test),axis = -1))
     X = pca_transform(X,k = k)
+    X = X-np.mean(X,axis = 0)
+    X = X/np.std(X,axis = 0)
     X_train = X[:np.size(idx_train_1s)+np.size(idx_train_7s),:]
     X_test = X[np.size(idx_train_1s)+np.size(idx_train_7s):,:]
     
