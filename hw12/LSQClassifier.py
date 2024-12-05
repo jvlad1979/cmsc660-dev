@@ -4,8 +4,6 @@ from nllsq_solvers import GaussNewton, StochasticGradientDescent, LevenbergMarqu
 
 class LSQClassifier:
     def __init__(self,solver = 'lm', solverkwargs = {'TOL' : 1e-3,'ITER_MAX' : 600},lam = 0.0,verbose = False):
-        # self.tol = tol
-        # self.iter_max = iter_max
         self.solverkwargs = solverkwargs
         self.k = None
         self.w = None
@@ -18,7 +16,6 @@ class LSQClassifier:
             self.solver = GaussNewton
         if solver == 'sgd':
             self.solver = StochasticGradientDescent
-            # self.lam = 0.1
     def fit(self,X,y):
         self.k = np.shape(X)[-1]
         w = np.ones((self.k*self.k + self.k + 1,))
@@ -35,13 +32,6 @@ class LSQClassifier:
 
     def _predict_score(self,X):
         n,d = X.shape
-        # d2 = d*d
-        # W = np.reshape(self.w[:d2],(d,d))
-        # v = self.w[d2:d2+d]
-        # b = self.w[-1]
-        # qterm = np.diag(X@W@np.transpose(X))
-        # lterm = X @ v
-        # preds = qterm + lterm + b
         preds = self._myquadratic(X,np.ones(n),self.w)
         return preds
 
@@ -76,6 +66,5 @@ class LSQClassifier:
         v = w[d2:d2+d]
         b = w[-1]
         qterm = np.diag(X@W@np.transpose(X))
-        # print((qterm + v.T@X.T + b).shape)
         q = y*(qterm + v.T@X.T + b)
         return q
